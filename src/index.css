@@ -1,0 +1,127 @@
+@import "tailwindcss";
+
+:root {
+  --bg-primary: #0f1117;     /* Deep matte charcoal background */
+  --bg-secondary: #161b22;   /* Slightly lighter panels/sidebars */
+  --bg-tertiary: #21262d;    /* Active tabs, hover states, borders */
+  
+  --text-primary: #e6edf3;   /* Soft white for high readability */
+  --text-secondary: #8b949e; /* Muted gray for comments/secondary text */
+  
+  --accent-primary: #58a6ff; /* Clean tech blue for active states/links */
+  --accent-success: #3fb950; /* Muted emerald green for success/run */
+  --accent-error: #f85149;   /* Soft coral red for errors */
+  
+  --border-color: #30363d;   /* Subtle, clean borders */
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+
+  /* Syntax Highlighting Tokens (Programiz-inspired vibrant distinction) */
+  --syntax-keyword: #ff7b72;
+  --syntax-function: #79c0ff;
+  --syntax-string: #a5d6ff;
+  --syntax-number: #ffa657;
+  --syntax-comment: #8b949e;
+  --syntax-operator: #d2a8ff;
+  --syntax-type: #7ee787;
+  --syntax-preprocessor: #ff7b72;
+}
+
+/* Syntax Token Highlighting Styles */
+.hl-keyword {
+  color: var(--syntax-keyword);
+  font-weight: 600;
+}
+
+.hl-function {
+  color: var(--syntax-function);
+  font-weight: 600;
+}
+
+.hl-string {
+  color: var(--syntax-string);
+}
+
+.hl-number {
+  color: var(--syntax-number);
+}
+
+.hl-comment {
+  color: var(--syntax-comment);
+  font-style: italic;
+  opacity: 0.85;
+}
+
+.hl-operator {
+  color: var(--syntax-operator);
+}
+
+.hl-type {
+  color: var(--syntax-type);
+}
+
+.hl-preprocessor {
+  color: var(--syntax-preprocessor);
+  font-weight: 500;
+}
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+  
+  body {
+    margin: 0;
+    padding: 0;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  code, pre, textarea.code-font, .font-mono {
+    font-family: var(--font-mono) !important;
+    font-feature-settings: "liga" 1, "calt" 1;
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--bg-tertiary);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #30363d;
+}
+
+/* Line Numbers Gutter */
+.line-numbers {
+  user-select: none;
+  text-align: right;
+  padding-right: 14px;
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+}
+
+/* Glowing Pulse Keyframe */
+@keyframes glowPulse {
+  0%, 100% {
+    box-shadow: 0 0 12px rgba(63, 185, 80, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(63, 185, 80, 0.55);
+  }
+}
+
+.anim-glow-btn {
+  animation: glowPulse 2s infinite ease-in-out;
+}

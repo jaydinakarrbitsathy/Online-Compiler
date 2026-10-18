@@ -1,0 +1,151 @@
+import React from 'react';
+import { X, Settings as SettingsIcon, Palette } from 'lucide-react';
+import { THEMES } from '../constants/themes';
+
+export function SettingsModal({ isOpen, onClose, settings, onUpdateSettings }) {
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+      <div className="w-full max-w-md bg-[#161b22] border border-[#30363d] rounded-2xl shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-150">
+        <div className="h-11 px-4 bg-[#21262d] border-b border-[#30363d] flex items-center justify-between text-xs font-semibold text-[#e6edf3]">
+          <div className="flex items-center gap-2">
+            <SettingsIcon size={15} className="text-[#58a6ff]" />
+            <span>Editor Settings & Themes</span>
+          </div>
+          <button 
+            onClick={onClose} 
+            className="text-[#8b949e] hover:text-[#e6edf3] p-1 rounded-lg"
+          >
+            <X size={15} />
+          </button>
+        </div>
+
+        <div className="p-4 space-y-4 text-xs text-[#e6edf3] max-h-[80vh] overflow-y-auto">
+          {/* Theme & Color Version */}
+          <div className="pb-3 border-b border-[#30363d]">
+            <div className="flex items-center gap-1.5 mb-1.5 font-medium text-[#e6edf3]">
+              <Palette size={14} className="text-[#58a6ff]" />
+              <span>Color Theme & Palette</span>
+            </div>
+            <div className="text-[11px] text-[#8b949e] mb-2.5">
+              Choose your workspace contrast and syntax highlighting style
+            </div>
+            <div className="grid grid-cols-2 gap-2">
+              {THEMES.map((th) => {
+                const isSelected = (settings.theme || 'dark-modern') === th.id;
+                return (
+                  <button
+                    key={th.id}
+                    onClick={() => onUpdateSettings({ ...settings, theme: th.id })}
+                    className={`p-2 rounded-xl text-left border transition-all flex flex-col gap-1.5 ${
+                      isSelected
+                        ? 'border-[#58a6ff] bg-[#21262d] shadow-sm ring-1 ring-[#58a6ff]'
+                        : 'border-[#30363d] bg-[#0f1117] hover:border-[#8b949e]/50'
+                    }`}
+                  >
+                    <div className="flex items-center justify-between w-full">
+                      <span className="font-semibold text-xs text-[#e6edf3] truncate">{th.name}</span>
+                      <div className="flex items-center gap-1">
+                        <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: th.colors.syntaxKeyword }} />
+                        <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: th.colors.syntaxFunction }} />
+                        <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: th.colors.syntaxString }} />
+                      </div>
+                    </div>
+                    <span className="text-[10px] text-[#8b949e] truncate">{th.description}</span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+          {/* Font Size */}
+          <div className="flex items-center justify-between">
+            <div>
+              <div className="font-medium text-[#e6edf3]">Font Size</div>
+              <div className="text-[11px] text-[#8b949e]">Editor monospace text size</div>
+            </div>
+            <select
+              value={settings.fontSize}
+              onChange={(e) => onUpdateSettings({ ...settings, fontSize: Number(e.target.value) })}
+              className="bg-[#0f1117] border border-[#30363d] rounded-lg px-3 py-1.5 text-[#e6edf3] text-xs outline-none focus:border-[#58a6ff]"
+            >
+              <option value={12}>12 px</option>
+              <option value={13}>13 px</option>
+              <option value={14}>14 px (Default)</option>
+              <option value={16}>16 px</option>
+              <option value={18}>18 px</option>
+            </select>
+          </div>
+
+          {/* Tab Size */}
+          <div className="flex items-center justify-between">
+            <div>
+              <div className="font-medium text-[#e6edf3]">Tab Indentation</div>
+              <div className="text-[11px] text-[#8b949e]">Number of spaces per Tab press</div>
+            </div>
+            <select
+              value={settings.tabSize}
+              onChange={(e) => onUpdateSettings({ ...settings, tabSize: Number(e.target.value) })}
+              className="bg-[#0f1117] border border-[#30363d] rounded-lg px-3 py-1.5 text-[#e6edf3] text-xs outline-none focus:border-[#58a6ff]"
+            >
+              <option value={2}>2 Spaces</option>
+              <option value={4}>4 Spaces (Default)</option>
+              <option value={8}>8 Spaces</option>
+            </select>
+          </div>
+
+          {/* Auto Close Brackets */}
+          <div className="flex items-center justify-between">
+            <div>
+              <div className="font-medium text-[#e6edf3]">Auto-close Brackets & Quotes</div>
+              <div className="text-[11px] text-[#8b949e]">Automatically pairs (), [], {}, "", ''</div>
+            </div>
+            <input
+              type="checkbox"
+              checked={settings.autoCloseBrackets}
+              onChange={(e) => onUpdateSettings({ ...settings, autoCloseBrackets: e.target.checked })}
+              className="w-4 h-4 rounded bg-[#0f1117] border-[#30363d] text-[#58a6ff] focus:ring-0 cursor-pointer accent-[#58a6ff]"
+            />
+          </div>
+
+          {/* Word Wrap */}
+          <div className="flex items-center justify-between">
+            <div>
+              <div className="font-medium text-[#e6edf3]">Word Wrap</div>
+              <div className="text-[11px] text-[#8b949e]">Wrap long lines automatically</div>
+            </div>
+            <input
+              type="checkbox"
+              checked={settings.wordWrap}
+              onChange={(e) => onUpdateSettings({ ...settings, wordWrap: e.target.checked })}
+              className="w-4 h-4 rounded bg-[#0f1117] border-[#30363d] text-[#58a6ff] focus:ring-0 cursor-pointer accent-[#58a6ff]"
+            />
+          </div>
+
+          {/* Code Autocomplete Dropdown Toggle */}
+          <div className="flex items-center justify-between">
+            <div>
+              <div className="font-medium text-[#e6edf3]">Code Autocomplete Dropdown</div>
+              <div className="text-[11px] text-[#8b949e]">Show automatic import & code suggestions while typing</div>
+            </div>
+            <input
+              type="checkbox"
+              checked={settings.autocomplete !== false}
+              onChange={(e) => onUpdateSettings({ ...settings, autocomplete: e.target.checked })}
+              className="w-4 h-4 rounded bg-[#0f1117] border-[#30363d] text-[#58a6ff] focus:ring-0 cursor-pointer accent-[#58a6ff]"
+            />
+          </div>
+        </div>
+
+        <div className="bg-[#161b22] px-4 py-3 text-[11px] text-[#8b949e] border-t border-[#30363d] flex justify-end">
+          <button
+            onClick={onClose}
+            className="px-4 py-1.5 bg-[#58a6ff] hover:bg-[#388bfd] text-[#0f1117] rounded-lg font-semibold transition-all"
+          >
+            Done
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
